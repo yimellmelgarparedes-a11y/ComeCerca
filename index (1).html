@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ComeCerca – prototipo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F7F5;--card:#fff;--ink:#12332F;--mut:#5B726E;--line:#DCE5E1;--brand:#12332F;--onbrand:#fff;--ok:#1F8A4C;--okbg:#DDF3E6;--warn:#8A5A00;--warnbg:#FFEFC2;--bad:#B3261E;--badbg:#FBE0DD;--aji:#F5B700;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1A18;--card:#162623;--ink:#E7F2EF;--mut:#97B0AB;--line:#27403B;--brand:#F5B700;--onbrand:#12332F;--ok:#6FD39A;--okbg:#17372A;--warn:#F5C84B;--warnbg:#3A2F10;--bad:#FF9188;--badbg:#42201D}}
+:root[data-theme="dark"]{--bg:#0E1A18;--card:#162623;--ink:#E7F2EF;--mut:#97B0AB;--line:#27403B;--brand:#F5B700;--onbrand:#12332F;--ok:#6FD39A;--okbg:#17372A;--warn:#F5C84B;--warnbg:#3A2F10;--bad:#FF9188;--badbg:#42201D}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;margin:0;line-height:1.15}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.logo{font:800 22px 'Bricolage Grotesque',system-ui,sans-serif}
+.logo small{display:block;font:400 12px Figtree,sans-serif;color:var(--mut)}
+.seg{display:flex;background:var(--line);border-radius:999px;padding:4px}
+.seg button{border:0;background:none;color:var(--ink);font:600 14px Figtree,sans-serif;padding:8px 16px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--brand);color:var(--onbrand)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--aji);outline-offset:2px}
+.hero h1{font-size:clamp(26px,6vw,36px);font-weight:800;margin-bottom:6px}
+.hero p{margin:0 0 16px;color:var(--mut)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+.lbl{font-weight:600;font-size:14px;margin:0 0 6px;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:600 14px Figtree,sans-serif;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--brand);color:var(--onbrand);border-color:var(--brand)}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}}
+input[type=range]{flex:1;min-width:140px;accent-color:var(--brand)}
+input[type=number],input[type=text],input[type=email],input[type=password],select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:9px 10px;min-width:0;width:100%}
+.rest{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.rhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.rhead h3{font-size:19px}
+.walk{white-space:nowrap;font:800 18px 'Bricolage Grotesque',sans-serif;text-align:right}
+.walk small{display:block;font:400 12px Figtree,sans-serif;color:var(--mut)}
+.meta{color:var(--mut);font-size:14px;margin-bottom:8px}
+.dish{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.dish .n{flex:1 1 180px;min-width:0}
+.price{font-weight:600}
+.badge{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px}
+.ok{background:var(--okbg);color:var(--ok)}.low{background:var(--warnbg);color:var(--warn)}.out{background:var(--badbg);color:var(--bad)}
+.btn{border:0;background:var(--brand);color:var(--onbrand);font:600 14px Figtree,sans-serif;padding:9px 14px;border-radius:10px;cursor:pointer}
+.btn.sec{background:var(--line);color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.sq{width:36px;height:36px;padding:0;font-size:18px}
+.dish input[type=number]{width:80px}
+.empty{text-align:center;color:var(--mut);padding:28px 10px}
+.add{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px}
+@media(max-width:560px){.add{grid-template-columns:1fr 1fr}.add input:first-child{grid-column:1/-1}}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.note{font-size:13px;color:var(--mut);margin:8px 0 0}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--brand);color:var(--onbrand);padding:10px 18px;border-radius:999px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+#toast.on{opacity:1}
+.foot{color:var(--mut);font-size:13px;text-align:center;margin:20px 0 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo">ComeCerca<small>Nombre provisional</small></div>
+  <div class="seg" role="group" aria-label="Tipo de usuario">
+    <button data-a="mode" data-v="stu" aria-pressed="true">Soy estudiante</button>
+    <button data-a="mode" data-v="rest" aria-pressed="false">Soy restaurante</button>
+  </div>
+</header>
+
+<section id="vStu">
+  <div class="hero"><h1>¿Qué puedo comer ahora cerca de mi universidad?</h1><p id="count"></p></div>
+  <div class="panel">
+    <div class="grid2">
+      <div><label class="lbl" for="uni">Mi universidad o instituto</label><select id="uni"></select></div>
+      <div><label class="lbl" for="dist">Distancia máxima</label>
+        <select id="dist"><option value="500">500 m (unos 6 min a pie)</option><option value="1000" selected>1 km</option><option value="2000">2 km</option><option value="99999">Sin límite</option></select></div>
+    </div>
+    <span class="lbl">Tipo de comida</span><div class="chips" id="typeChips"></div>
+    <div class="row">
+      <label class="lbl" for="max" style="margin:0">Precio máximo: <span id="maxv"></span></label>
+      <input type="range" id="max" min="5" max="30" step="1" value="20">
+    </div>
+    <label class="row" style="margin-top:10px"><input type="checkbox" id="avail" checked style="width:auto"> Mostrar solo platos con porciones disponibles</label>
+  </div>
+  <div id="list"></div>
+</section>
+
+<section id="vRest" hidden>
+  <div id="auth">
+    <div class="hero"><h1 id="authT">Registra tu restaurante</h1><p>Crea tu cuenta, ubica tu local y publica tu menú del día en un minuto.</p></div>
+    <div class="tabs" id="tabs"><button class="chip" data-a="tab" data-v="reg" id="tReg" aria-pressed="true">Crear cuenta</button><button class="chip" data-a="tab" data-v="login" id="tLog" aria-pressed="false">Ya tengo cuenta</button></div>
+    <div class="panel" id="fReg">
+      <div class="grid2">
+        <div><label class="lbl" for="rName">Nombre del local</label><input type="text" id="rName" autocomplete="organization"></div>
+        <div><label class="lbl" for="rType">Tipo de comida</label><select id="rType"></select></div>
+        <div id="wMail"><label class="lbl" for="rMail">Correo</label><input type="email" id="rMail" autocomplete="email"></div>
+        <div id="wPass"><label class="lbl" for="rPass">Contraseña (mínimo 6 caracteres)</label><input type="password" id="rPass" autocomplete="new-password"></div>
+        <div><label class="lbl" for="rAddr">Dirección o referencia</label><input type="text" id="rAddr" placeholder="Ej. Av. Ayabaca, frente a la SUNAT"></div>
+        <div><label class="lbl" for="rCampus">Estoy cerca de</label><select id="rCampus"></select></div>
+        <div><label class="lbl" for="rMeters">A cuántos metros (aprox.)</label><input type="number" id="rMeters" min="10" step="10" value="150"></div>
+        <div><span class="lbl">O usa tu ubicación real</span><button class="btn sec" data-a="geo" type="button" id="geoBtn">Usar mi ubicación</button></div>
+      </div>
+      <button class="btn" data-a="register" id="btnReg">Crear cuenta y entrar</button>
+    </div>
+    <div class="panel" id="fLog" hidden>
+      <div class="grid2">
+        <div><label class="lbl" for="lMail">Correo</label><input type="email" id="lMail" autocomplete="email"></div>
+        <div><label class="lbl" for="lPass">Contraseña</label><input type="password" id="lPass" autocomplete="current-password"></div>
+      </div>
+      <button class="btn" data-a="login">Ingresar</button>
+    </div>
+  </div>
+
+  <div id="panel" hidden>
+    <div class="hero"><h1 id="pTitle"></h1><p id="pMeta"></p></div>
+    <div class="panel">
+      <div class="rhead"><h3>Platos de hoy</h3><div class="row"><button class="btn sec" data-a="soldout">Marcar todo agotado</button><button class="btn sec" data-a="logout">Cerrar sesión</button></div></div>
+      <div id="mineDishes"></div>
+    </div>
+    <div class="panel">
+      <span class="lbl">Agregar un plato</span>
+      <div class="add">
+        <input type="text" id="nName" placeholder="Nombre del plato" aria-label="Nombre del plato">
+        <input type="number" id="nPrice" placeholder="Precio S/" min="1" step="0.5" aria-label="Precio">
+        <input type="number" id="nLeft" placeholder="Porciones" min="1" step="1" aria-label="Porciones">
+        <button class="btn" data-a="add">Agregar</button>
+      </div>
+    </div>
+  </div>
+</section>
+<p class="foot">Los locales marcados como Ejemplo son ficticios. Los campus y sus ubicaciones salen de Google Maps.</p>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ---- Conexión a Supabase (la publishable key es pública por diseño; la seguridad la dan las políticas RLS) ----
+const SUPABASE_URL='https://shdedodplnfcnfrhdcmo.supabase.co';
+const SUPABASE_KEY='sb_publishable_V8YTCDiexjek5DYK4WkZCg_MqriIiCI';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// ---- Campus reales (nombre y coordenadas de Google Maps) ----
+const C=[
+['utp','UTP Ica','Universidades',-14.071554,-75.7362614],
+['unica','UNICA – San Luis Gonzaga','Universidades',-14.0831959,-75.7350777],
+['upsjb','Universidad San Juan Bautista','Universidades',-14.0451129,-75.7504006],
+['uai','Universidad Autónoma de Ica (campus centro)','Universidades',-14.0767076,-75.7337737],
+['poli','Instituto Politécnico Ica','Institutos',-14.0739715,-75.735709],
+['catalina','IESTP Catalina Buendía de Pecho','Institutos',-14.0795888,-75.731221],
+['alas','Instituto Alas Peruanas','Institutos',-14.0754314,-75.7234869],
+['canad','IST Peruano Canadiense','Institutos',-14.0665874,-75.72783],
+['jhal','ISTP Jhalebet','Institutos',-14.0668273,-75.7277734],
+['unitec','Instituto UNITEC','Institutos',-14.0736248,-75.7320143],
+['compu','Instituto Compu Master','Institutos',-14.0728444,-75.7259508],
+['telesup','Instituto Telesup','Institutos',-14.0640546,-75.7275773],
+['parcona','IEST Privado Parcona','Institutos',-14.044788,-75.7018591]
+].map(a=>({id:a[0],name:a[1],group:a[2],lat:a[3],lng:a[4]}));
+const campus=id=>C.find(c=>c.id===id);
+const hav=(a,b,c,d)=>{const t=x=>x*Math.PI/180,h=Math.sin(t(c-a)/2)**2+Math.cos(t(a))*Math.cos(t(c))*Math.sin(t(d-b)/2)**2;return Math.round(12742000*Math.asin(Math.sqrt(h)))};
+const at=(cid,n,e)=>{const c=campus(cid),lat=c.lat+n/111320;return{lat,lng:c.lng+e/(111320*Math.cos(lat*Math.PI/180))}};
+
+const TYPES=['Menú del día','Tradicional iqueño','Desayunos y jugos','Pollo a la brasa','Chifa','Parrillas','Vegetariano','Marino','Comida rápida','Criollo'];
+
+// ---- Locales de EJEMPLO (ficticios, solo para mostrar cómo se ve). Pon SHOW_DEMO=false para ocultarlos. ----
+const SHOW_DEMO=true;
+const ago=m=>Date.now()-m*60000;
+let did0=0;
+const D=(n,p,l)=>({id:--did0,name:n,price:p,left:l});
+const mk=(name,type,cid,n,e,upd,dishes)=>({id:--did0,owner:null,demo:true,name,type,addr:'',...at(cid,n,e),upd:ago(upd),dishes});
+const DEMO=[
+// UTP Ica
+mk('Sazón Iqueña','Tradicional iqueño','utp',-70,90,4,[D('Sopa seca + carapulcra',12,14),D('Aguadito de pollo + arroz con pato',11,6),D('Frejoles con seco de res',10,0)]),
+mk('Pollería El Huarango','Pollo a la brasa','utp',180,-120,12,[D('1/4 de pollo con papas y ensalada',15,20),D('1/8 de pollo con papas',9,3)]),
+// UNICA – San Luis Gonzaga
+mk('Menú Popular Doña Chela','Menú del día','unica',150,200,25,[D('Sopa de gallina + seco de pollo',7,30),D('Crema de zapallo + tallarín rojo',7,12)]),
+mk('Chicharrones Don Teo','Desayunos y jugos','unica',-120,-90,2,[D('Pan con chicharrón + camote',7,2),D('Tamal iqueño + jugo de papaya',6,10)]),
+mk('Juguería La Pecana','Desayunos y jugos','unica',90,70,9,[D('Jugo de lúcuma con leche',6,15),D('Pan con tortilla + café',5,8)]),
+// UPSJB – San Juan Bautista
+mk('Rincón Pallarero','Tradicional iqueño','upsjb',100,150,8,[D('Sopa teóloga + guiso de pallares',12,18),D('Cabrito guisado + arroz',16,7)]),
+mk('Pollos El Sauce','Pollo a la brasa','upsjb',-90,-60,15,[D('1/4 de pollo + papas + gaseosa',16,10),D('Mostrito (arroz chaufa + pollo)',11,5)]),
+// Universidad Autónoma de Ica
+mk('Raíces Vegetariano','Vegetariano','uai',90,-110,15,[D('Tacu tacu de pallares con ensalada',13,8),D('Hamburguesa de lentejas con papas',11,0)]),
+mk('Cevichería Rincón Marino','Marino','uai',-70,100,6,[D('Ceviche del día',20,6),D('Arroz con mariscos',18,4)]),
+// Instituto Politécnico Ica
+mk('El Rey de la Salchi','Comida rápida','poli',110,90,20,[D('Salchipapa clásica',7,25),D('Alitas broaster + papas',12,8)]),
+mk('Menú Don Pepe','Menú del día','poli',-60,-80,7,[D('Sopa + lomo saltado',9,16),D('Caldo de gallina + arroz con pollo',9,9)]),
+// IESTP Catalina Buendía de Pecho
+mk('Mamá Elena Sopas y Segundos','Menú del día','catalina',-80,120,9,[D('Sopa + escabeche de pollo',8,14),D('Crema + cau cau de mondongo',8,6)]),
+mk('Broaster Catalina','Pollo a la brasa','catalina',70,-70,13,[D('Pollo broaster + papas',12,15),D('Salchipollo',9,7)]),
+// Instituto Alas Peruanas
+mk('Chifa Dragón de Ica','Chifa','alas',-60,100,6,[D('Arroz chaufa especial',12,10),D('Tallarín saltado de pollo',12,5)]),
+mk('Tamales y Más Doña Lucha','Desayunos y jugos','alas',60,60,3,[D('Tamal de cerdo + café',6,8),D('Pan con chicharrón + jugo',8,12)]),
+// IST Peruano Canadiense
+mk('Menú Casero Mary','Menú del día','canad',-90,-40,5,[D('Sopa + estofado de pollo',9,16),D('Entrada + arroz con pato',12,5)]),
+// ISTP Jhalebet
+mk('Sánguches Mi Barrio','Comida rápida','jhal',70,60,10,[D('Pan con chicharrón',8,12),D('Jugo surtido',6,15)]),
+// Instituto UNITEC
+mk('Tallarines Don Lucho','Criollo','unitec',60,-100,3,[D('Tallarín rojo con pollo',9,11),D('Tallarín verde con bistec',12,4)]),
+// Instituto Compu Master
+mk('Fuente de Soda Compu','Comida rápida','compu',40,70,14,[D('Hamburguesa + papas',10,9),D('Sándwich de pollo',7,13)]),
+// Instituto Telesup
+mk('Comedor Estudiantil Telesup','Menú del día','telesup',-50,80,7,[D('Sopa + milanesa de pollo',8,20),D('Sopa + guiso de lentejas con huevo',7,10)]),
+// IEST Privado Parcona
+mk('Chifa Parcona','Chifa','parcona',90,-80,18,[D('Arroz chaufa de pollo',10,12),D('Aeropuerto',11,6)]),
+mk('Sabores de Parcona','Tradicional iqueño','parcona',-70,60,11,[D('Sopa seca + carapulcra',11,9),D('Pallares guisados + seco de cabrito',14,4)])
+];
+let R=[];            // locales con sus platos, cargados desde Supabase
+let loaded=false;
+const S={mode:'stu',uni:'utp',dist:1000,type:'Todos',max:20,avail:true,user:null,geo:null,tab:'reg'};
+
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=p=>'S/ '+Number(p).toFixed(2);
+const mins=t=>{const m=Math.floor((Date.now()-t)/60000);return m<1?'ahora mismo':m<60?'hace '+m+' min':m<1440?'hace '+Math.floor(m/60)+' h':'hace '+Math.floor(m/1440)+' d'};
+const badge=l=>l<=0?'<span class="badge out">Agotado</span>':l<=3?'<span class="badge low">Últimas '+l+'</span>':'<span class="badge ok">'+l+' porciones</span>';
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),3200)}
+const campusOpts=()=>['Universidades','Institutos'].map(g=>`<optgroup label="${g}">`+C.filter(c=>c.group===g).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')+'</optgroup>').join('');
+const cur=()=>S.user?R.find(r=>r.owner===S.user.id):null;
+
+// ---- Pendiente de crear el local (se guarda por si el correo requiere confirmación) ----
+let PEND=null;
+const store={get(){try{return JSON.parse(localStorage.getItem('cc_pend')||'null')}catch(e){return null}},set(v){try{v?localStorage.setItem('cc_pend',JSON.stringify(v)):localStorage.removeItem('cc_pend')}catch(e){}}};
+const errMsg=e=>{const m=(e&&e.message)||'';
+  if(/Invalid login/i.test(m))return 'Correo o contraseña incorrectos';
+  if(/already registered/i.test(m))return 'Ese correo ya tiene cuenta. Ingresa.';
+  if(/at least/i.test(m))return 'La contraseña debe tener al menos 6 caracteres';
+  if(/rate limit/i.test(m))return 'Demasiados intentos. Espera unos minutos.';
+  if(/email not confirmed/i.test(m))return 'Confirma tu correo con el enlace que te enviamos.';
+  return m||'Ocurrió un error. Intenta de nuevo.'};
+
+// ---- Datos ----
+async function load(){
+  const{data,error}=await sb.from('restaurants').select('id,owner_id,name,type,address,lat,lng,updated_at,dishes(id,name,price,portions_left)');
+  if(error){toast('No se pudieron cargar los locales: '+error.message);return}
+  const real=data.map(r=>({id:r.id,owner:r.owner_id,name:r.name,type:r.type,addr:r.address||'',lat:r.lat,lng:r.lng,upd:new Date(r.updated_at).getTime(),
+    dishes:(r.dishes||[]).map(d=>({id:d.id,name:d.name,price:Number(d.price),left:d.portions_left})).sort((a,b)=>a.id-b.id)}));
+  R=real.concat(SHOW_DEMO?DEMO:[]);
+  loaded=true;render();
+}
+let lt;const loadSoon=()=>{clearTimeout(lt);lt=setTimeout(load,250)};
+sb.channel('cc-live')
+  .on('postgres_changes',{event:'*',schema:'public',table:'dishes'},loadSoon)
+  .on('postgres_changes',{event:'*',schema:'public',table:'restaurants'},loadSoon)
+  .subscribe();
+setInterval(()=>{if(S.mode==='stu')render()},60000);
+
+let creating=false;
+async function createFromPending(){
+  const p=PEND||store.get();
+  if(!p||!S.user||creating||cur())return;
+  creating=true;
+  const{error}=await sb.from('restaurants').insert({owner_id:S.user.id,name:p.name,type:p.type,address:p.addr||null,lat:p.lat,lng:p.lng});
+  creating=false;
+  if(error){toast('No se pudo crear el local: '+error.message);return}
+  PEND=null;store.set(null);toast('Local creado. Agrega tus platos.');await load();
+}
+async function sync(session){
+  S.user=session?session.user:null;
+  if(S.user){await load();await createFromPending()}
+  render();
+}
+sb.auth.onAuthStateChange((ev,session)=>{setTimeout(()=>sync(session),0)});
+
+const touch=()=>sb.from('restaurants').update({updated_at:new Date().toISOString()}).eq('id',cur().id);
+
+// ---- Pintar ----
+function renderStu(){
+  const c=campus(S.uni);
+  const types=['Todos',...new Set(R.map(r=>r.type))];
+  $('#typeChips').innerHTML=types.map(t=>`<button class="chip" data-a="type" data-v="${esc(t)}" aria-pressed="${S.type===t}">${esc(t)}</button>`).join('');
+  $('#maxv').textContent='S/ '+S.max;
+  if(!loaded){$('#count').textContent='Cargando locales…';$('#list').innerHTML='';return}
+  const list=R.map(r=>({r,m:hav(c.lat,c.lng,r.lat,r.lng),ds:r.dishes.filter(d=>d.price<=S.max&&(!S.avail||d.left>0))}))
+    .filter(x=>x.ds.length&&x.m<=S.dist&&(S.type==='Todos'||x.r.type===S.type)).sort((a,b)=>a.m-b.m);
+  $('#count').textContent=list.length?list.length+' locales con comida disponible cerca de '+c.name+', del más cercano al más lejano.':(R.length?'No hay locales con esos filtros.':'Aún no hay locales registrados.');
+  $('#list').innerHTML=list.length?list.map(({r,m,ds})=>`<article class="rest"><div class="rhead"><div><h3>${esc(r.name)}</h3><div class="meta">${r.demo?'<span class="badge low">Ejemplo</span> ':''}${esc(r.type)} · actualizado ${mins(r.upd)}${r.addr?'<br>'+esc(r.addr):''}</div></div><div class="walk">${Math.max(1,Math.ceil(m/80))} min<small>a pie · ${m} m</small></div></div>`+
+    ds.map(d=>`<div class="dish"><div class="n">${esc(d.name)}</div><span class="price">${money(d.price)}</span>${badge(d.left)}<button class="btn" data-a="take" data-v="${r.id}:${d.id}" ${d.left<1?'disabled':''}>Separar 1</button></div>`).join('')+'</article>').join('')
+    :'<div class="empty">'+(R.length?'Prueba ampliando la distancia, subiendo el precio máximo o quitando el filtro de tipo de comida.':'Los restaurantes que se registren aparecerán aquí. ¿Tienes un local? Entra en "Soy restaurante".')+'</div>';
+}
+function renderRest(){
+  const logged=!!S.user,r=cur(),setup=logged&&loaded&&!r;
+  $('#auth').hidden=logged&&!setup;$('#panel').hidden=!(logged&&r);
+  $('#tabs').hidden=setup;
+  $('#fReg').hidden=!(setup||S.tab==='reg');$('#fLog').hidden=setup||S.tab!=='login';
+  $('#wMail').hidden=setup;$('#wPass').hidden=setup;
+  $('#btnReg').dataset.a=setup?'mkrest':'register';
+  $('#btnReg').textContent=setup?'Crear mi local':'Crear cuenta y entrar';
+  $('#authT').textContent=setup?'Falta un paso: crea tu local':'Registra tu restaurante';
+  $('#tReg').setAttribute('aria-pressed',String(S.tab==='reg'));$('#tLog').setAttribute('aria-pressed',String(S.tab==='login'));
+  if(!logged||!r)return;
+  $('#pTitle').textContent=r.name;
+  $('#pMeta').textContent=r.type+' · última actualización '+mins(r.upd)+(r.addr?' · '+r.addr:'');
+  $('#mineDishes').innerHTML=r.dishes.length?r.dishes.map(d=>`<div class="dish"><div class="n">${esc(d.name)}<div class="meta" style="margin:0">${badge(d.left)}</div></div>
+    <label class="row" style="gap:6px">S/ <input type="number" min="1" step="0.5" value="${d.price}" data-price="${d.id}" aria-label="Precio de ${esc(d.name)}"></label>
+    <button class="btn sec sq" data-a="dec" data-v="${d.id}" aria-label="Quitar una porción">−</button>
+    <button class="btn sec sq" data-a="inc" data-v="${d.id}" aria-label="Agregar una porción">+</button>
+    <button class="btn sec" data-a="del" data-v="${d.id}">Quitar</button></div>`).join(''):'<div class="empty">Aún no cargaste platos. Agrega el primero abajo.</div>';
+}
+function render(){renderStu();renderRest();
+  document.querySelectorAll('[data-a=mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===S.mode)));
+  $('#vStu').hidden=S.mode!=='stu';$('#vRest').hidden=S.mode!=='rest'}
+
+function readLocal(){
+  const name=$('#rName').value.trim();
+  if(!name){toast('Escribe el nombre de tu local');return null}
+  const pos=S.geo||at($('#rCampus').value,0,Number($('#rMeters').value)||150);
+  return{name,type:$('#rType').value,addr:$('#rAddr').value.trim(),lat:pos.lat,lng:pos.lng};
+}
+async function db(p){const{error}=await p;if(error){toast('Error: '+error.message);return false}return true}
+
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const a=b.dataset.a,v=b.dataset.v;
+  if(a==='mode')S.mode=v;
+  else if(a==='type')S.type=v;
+  else if(a==='tab')S.tab=v;
+  else if(a==='take'){const[rid,did]=v.split(':').map(Number);const rr=R.find(x=>x.id===rid);
+    if(rid<0){const dd=rr.dishes.find(x=>x.id===did);if(dd.left>0)dd.left--;toast('Local de ejemplo: así funcionará con los locales reales.');render();return}
+    b.disabled=true;
+    const{error}=await sb.rpc('reserve_portion',{p_dish:did});
+    if(error)toast('Ese plato se agotó justo ahora.');else toast('Separaste 1 porción en '+rr.name+'. Preséntate en 15 min.');
+    await load();return}
+  else if(a==='geo'){
+    if(!navigator.geolocation){toast('Tu navegador no permite ubicación. Usa "Estoy cerca de".');return}
+    navigator.geolocation.getCurrentPosition(p=>{S.geo={lat:p.coords.latitude,lng:p.coords.longitude};$('#geoBtn').textContent='Ubicación guardada ✓';toast('Ubicación guardada')},
+      ()=>toast('No se pudo obtener la ubicación. Usa "Estoy cerca de".'));return}
+  else if(a==='register'){
+    const mail=$('#rMail').value.trim().toLowerCase(),pass=$('#rPass').value;
+    const loc=readLocal();if(!loc)return;
+    if(!/.+@.+\..+/.test(mail)||pass.length<6){toast('Escribe un correo válido y una contraseña de 6 o más caracteres');return}
+    PEND=loc;store.set(loc);b.disabled=true;
+    const{data,error}=await sb.auth.signUp({email:mail,password:pass});
+    b.disabled=false;
+    if(error){PEND=null;store.set(null);toast(errMsg(error));if(/already/i.test(error.message||'')){S.tab='login';render()}return}
+    if(!data.session){toast('Te enviamos un correo. Confírmalo y luego ingresa.');S.tab='login'}
+    else toast('Cuenta creada.');
+    render();return}
+  else if(a==='mkrest'){
+    const loc=readLocal();if(!loc)return;PEND=loc;b.disabled=true;await createFromPending();b.disabled=false;render();return}
+  else if(a==='login'){
+    const{error}=await sb.auth.signInWithPassword({email:$('#lMail').value.trim().toLowerCase(),password:$('#lPass').value});
+    if(error){toast(errMsg(error));return}toast('Bienvenido');return}
+  else if(a==='logout'){await sb.auth.signOut();S.tab='login';return}
+  else if(a==='inc'||a==='dec'){const d=cur().dishes.find(d=>d.id==v);const n=a==='inc'?d.left+1:Math.max(0,d.left-1);
+    if(await db(sb.from('dishes').update({portions_left:n}).eq('id',d.id))){await touch();await load()}return}
+  else if(a==='del'){if(await db(sb.from('dishes').delete().eq('id',v))){await touch();await load()}return}
+  else if(a==='soldout'){if(await db(sb.from('dishes').update({portions_left:0}).eq('restaurant_id',cur().id))){await touch();toast('Todo marcado como agotado');await load()}return}
+  else if(a==='add'){
+    const n=$('#nName').value.trim(),p=parseFloat($('#nPrice').value),l=parseInt($('#nLeft').value,10);
+    if(!n||!(p>0)||!(l>0)){toast('Completa nombre, precio y porciones');return}
+    if(await db(sb.from('dishes').insert({restaurant_id:cur().id,name:n,price:p,portions_left:l}))){await touch();['#nName','#nPrice','#nLeft'].forEach(s=>$(s).value='');toast('Plato agregado. Ya lo ven los estudiantes.');await load()}return}
+  render();
+});
+document.addEventListener('change',async e=>{
+  const t=e.target;
+  if(t.id==='uni')S.uni=t.value;
+  else if(t.id==='dist')S.dist=Number(t.value);
+  else if(t.id==='avail')S.avail=t.checked;
+  else if(t.dataset.price){const p=parseFloat(t.value);if(p>0&&await db(sb.from('dishes').update({price:p}).eq('id',t.dataset.price))){await touch();toast('Precio actualizado');await load()}return}
+  else return;
+  render();
+});
+$('#max').addEventListener('input',e=>{S.max=Number(e.target.value);renderStu()});
+$('#uni').innerHTML=campusOpts();$('#uni').value=S.uni;
+$('#rCampus').innerHTML=campusOpts();
+$('#rType').innerHTML=TYPES.map(t=>`<option>${t}</option>`).join('');
+render();
+load();
+sb.auth.getSession().then(({data})=>{if(data.session)sync(data.session)});
+</script>
+</body>
+</html>
